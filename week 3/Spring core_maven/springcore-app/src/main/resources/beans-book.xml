@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+         http://www.springframework.org/schema/beans
+         https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Constructor Injection -->
+    <bean id="authorBean7" class="com.example.Author7">
+        <constructor-arg value="Lakshman" />
+    </bean>
+
+    <!-- Constructor + Setter Injection -->
+    <bean id="bookBean7" class="com.example.Book7">
+        <constructor-arg value="Ramayana" />
+        <property name="author" ref="authorBean7" />
+    </bean>
+
+</beans>

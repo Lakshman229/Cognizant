@@ -1,0 +1,52 @@
+-- Step 1: Drop table if it exists and create a new one
+DROP TABLE IF EXISTS employees;
+
+CREATE TABLE employees (
+    emp_id INT PRIMARY KEY,
+    emp_name VARCHAR(100),
+    salary DECIMAL(10,2)
+);
+
+-- Step 2: Insert sample data
+INSERT INTO employees VALUES 
+(101, 'John', 30000),
+(102, 'Alice', 40000),
+(103, 'Raj', 50000);
+
+-- Step 3: Create the stored procedure
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS update_salary$$
+
+CREATE PROCEDURE update_salary (
+    IN p_emp_id INT,
+    IN p_percent DECIMAL(5,2)
+)
+BEGIN
+    DECLARE v_count INT;
+
+    -- Check if employee exists
+    SELECT COUNT(*) INTO v_count
+    FROM employees
+    WHERE emp_id = p_emp_id;
+
+    IF v_count > 0 THEN
+        -- Update salary
+        UPDATE employees
+        SET salary = salary + (salary * p_percent / 100)
+        WHERE emp_id = p_emp_id;
+
+        SELECT CONCAT('Salary updated for Employee ID ', p_emp_id) AS message;
+    ELSE
+        SELECT CONCAT('Employee ID ', p_emp_id, ' does not exist.') AS message;
+    END IF;
+END$$
+
+DELIMITER ;
+
+-- Step 4: Call the procedure
+CALL update_salary(102, 10);  -- Should increase Alice's salary by 10%
+CALL update_salary(105, 15);  -- Employee does not exist
+
+-- Step 5: Check the result
+SELECT * FROM employees;
