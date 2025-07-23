@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.example;
 
 public class Country {
@@ -24,3 +25,31 @@ public class Country {
         return "Country [name=" + name + ", capital=" + capital + "]";
     }
 }
+=======
+package com.example;
+
+public class Country {
+    private String name;
+    private String capital;
+
+    // Getters and Setters
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCapital() {
+        return capital;
+    }
+    public void setCapital(String capital) {
+        this.capital = capital;
+    }
+
+    @Override
+    public String toString() {
+        return "Country [name=" + name + ", capital=" + capital + "]";
+    }
+}
+>>>>>>> fafb6b58dcac195564aab91622ba0d61ad852a4a

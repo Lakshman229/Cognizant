@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 -- 1. Create the table
 DROP TABLE IF EXISTS students;
 
@@ -58,4 +59,66 @@ DELIMITER ;
 CALL assign_grades();
 
 -- 5. View the results
+=======
+-- 1. Create the table
+DROP TABLE IF EXISTS students;
+
+CREATE TABLE students (
+    student_id INT PRIMARY KEY,
+    student_name VARCHAR(100),
+    marks INT,
+    grade CHAR(1)
+);
+
+-- 2. Insert sample data
+INSERT INTO students (student_id, student_name, marks) VALUES
+(1, 'Alice', 92),
+(2, 'Bob', 76),
+(3, 'Charlie', 64),
+(4, 'David', 58);
+
+-- 3. Create the stored procedure
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS assign_grades$$
+
+CREATE PROCEDURE assign_grades()
+BEGIN
+   DECLARE done INT DEFAULT FALSE;
+   DECLARE sid INT;
+   DECLARE smarks INT;
+
+   DECLARE student_cursor CURSOR FOR
+      SELECT student_id, marks FROM students;
+   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+   OPEN student_cursor;
+
+   read_loop: LOOP
+      FETCH student_cursor INTO sid, smarks;
+      IF done THEN
+         LEAVE read_loop;
+      END IF;
+
+      IF smarks >= 90 THEN
+         UPDATE students SET grade = 'A' WHERE student_id = sid;
+      ELSEIF smarks >= 75 THEN
+         UPDATE students SET grade = 'B' WHERE student_id = sid;
+      ELSEIF smarks >= 60 THEN
+         UPDATE students SET grade = 'C' WHERE student_id = sid;
+      ELSE
+         UPDATE students SET grade = 'F' WHERE student_id = sid;
+      END IF;
+   END LOOP;
+
+   CLOSE student_cursor;
+END$$
+
+DELIMITER ;
+
+-- 4. Call the procedure
+CALL assign_grades();
+
+-- 5. View the results
+>>>>>>> fafb6b58dcac195564aab91622ba0d61ad852a4a
 SELECT * FROM students;
